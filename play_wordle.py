@@ -4,12 +4,14 @@ def main():
     print("Test Wordle")
     wordle = Wordle("APPLE")
 
-    while True:
+    while wordle.can_attempt:
         x=input("Type your guess: ")
-        if x == wordle.secret:
-            print("Congrats!! You guessed the word correctly")
-            break
-        print("Your guess is incorrect. The correct answer was", Wordle)
+        wordle.attempt(x)
+
+    if wordle.is_solved:
+        print("Congrats!! You found the correct answer")
+    else:
+        print("Game Over")
 
 
 if __name__ == "__main__":
