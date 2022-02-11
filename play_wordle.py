@@ -5,8 +5,11 @@ from typing import List
 import random
 
 def main():
-    print("Test Wordle")
-    wordle = Wordle("APPLE")
+
+    word_set = load_word_set("/Users/duyguunalPhysics/github/Wordle-in-Python/5letterwords.txt")
+    secret=random.choice(list(word_set))
+    wordle = Wordle(secret)
+
 
     while wordle.can_attempt:
         x=input("\nType your guess: ")
@@ -17,6 +20,7 @@ def main():
                   +Fore.RESET
             )
             continue
+
         wordle.attempt(x)
         display_results(wordle)
 
@@ -24,7 +28,7 @@ def main():
     if wordle.is_solved:
         print("Congrats!! You found the correct answer")
     else:
-        print(f"Game Over")
+        print(f"Game Over. The answer was {wordle.secret}")
 
 def display_results(wordle: Wordle):
     print("\nYour answers so far...")
@@ -41,6 +45,14 @@ def display_results(wordle: Wordle):
         lines.append(" ".join(["_"]*wordle.Word_Length))
 
     draw_border_around(lines)
+
+def load_word_set(path: str):
+    word_set = set()
+    with open(path, "r") as f:
+        for line in f.readlines():
+            word = line.strip().upper()
+            word_set.add(word)
+    return word_set
 
 def convert_results_to_colour(result: List[LetterState]):
     result_with_colour = []
